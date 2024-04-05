@@ -1,6 +1,6 @@
 ### Added:
 - 
 ### Fixed:
-- Fixed gilded smithing upgrade loot table
+- Fixed stone golem upgrade texture
 ### Changed:
 - 
