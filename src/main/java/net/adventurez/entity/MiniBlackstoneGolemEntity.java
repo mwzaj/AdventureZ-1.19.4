@@ -83,7 +83,7 @@ public class MiniBlackstoneGolemEntity extends HostileEntity {
 
     @Override
     public boolean canSpawn(WorldView view) {
-        return super.canSpawn(view) && this.getWorld().getBlockState(this.getBlockPos()).getBlock().canMobSpawnInside(this.getWorld().getBlockState(this.getBlockPos()));
+        return super.canSpawn(view) && this.getWorld().getBlockState(this.getBlockPos()).getBlock().canMobSpawnInside();
     }
 
 }

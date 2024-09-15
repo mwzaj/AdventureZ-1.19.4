@@ -150,47 +150,6 @@ public class RenderInit {
         ParticleFactoryRegistry.getInstance().register(ParticleInit.VOID_CLOUD_PARTICLE, VoidCloudParticle.CloudFactory::new);
         ParticleFactoryRegistry.getInstance().register(ParticleInit.SPRINT_PARTICLE, SprintParticle.SprintFactory::new);
 
-        HudRenderCallback.EVENT.register((drawContext, tickDelta) -> {
-            MinecraftClient client = MinecraftClient.getInstance();
-            if (!client.options.hudHidden) {
-                ItemStack itemStack = client.player.getEquippedStack(EquipmentSlot.CHEST);
-                if (!itemStack.isEmpty() && itemStack.isOf(ItemInit.GILDED_NETHERITE_CHESTPLATE)) {
-                    NbtCompound tag = itemStack.getNbt();
-                    if (tag != null && tag.contains("armor_time") && tag.contains("activating_armor")) {
-                        if (tag.getBoolean("activating_armor")) {
-                            int scaledWidth = client.getWindow().getScaledWidth();
-                            int scaledHeight = client.getWindow().getScaledHeight();
-                            int worldTime = (int) client.player.getWorld().getTime();
-                            int savedTagInt = tag.getInt("armor_time");
-                            float effectDuration = ConfigInit.CONFIG.gilded_netherite_armor_effect_duration;
-                            drawContext.getMatrices().push();
-                            if (savedTagInt + effectDuration > worldTime) {
-                                int multiplier = 2;
-                                if (savedTagInt + Math.max(effectDuration - 100, 0) < worldTime) {
-                                    multiplier = 4;
-                                }
 
-                                float pulsating = (float) Math.sin((float) ((worldTime * multiplier) - (savedTagInt - 1)) / 6.2831855F);
-                                drawContext.setShaderColor(1.0F, 1.0F, 1.0F, pulsating + 0.5F);
-                                drawContext.drawTexture(ACTIVE_ARMOR_TEXTURE, (scaledWidth / 2) - 5, scaledHeight - 49, 10, 10, 0, 0, 16, 16, 16, 16);
-                            } else {
-                                float fading = (1F - (((float) (worldTime - (savedTagInt + (effectDuration - 1f))) / effectDuration) - 0.4F));
-                                drawContext.setShaderColor(1.0F, 0.65F, 0.65F, fading);
-                                drawContext.drawTexture(ACTIVE_ARMOR_TEXTURE, (scaledWidth / 2) - 5, scaledHeight - 49, 10, 10, 0, 0, 16, 16, 16, 16);
-                            }
-                            drawContext.getMatrices().pop();
-                            drawContext.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-                        }
-                    }
-                }
-                if (client.player.hasStatusEffect(EffectInit.WITHERING)) {
-                    drawContext.setShaderColor(1.0F, 1.0F, 1.0F, client.player.getStatusEffect(EffectInit.WITHERING).getDuration() / 280F);
-                    int scaledWidth = client.getWindow().getScaledWidth();
-                    int scaledHeight = client.getWindow().getScaledHeight();
-                    drawContext.drawTexture(WITHERED_TEXTURE, scaledWidth / 2 - 64, scaledHeight / 2 - 64, 0.0F, 0.0F, 128, 128, 128, 128);
-                    drawContext.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-                }
-            }
-        });
     }
 }

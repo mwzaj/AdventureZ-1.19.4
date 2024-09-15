@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -17,7 +18,7 @@ import net.adventurez.block.entity.*;
 public class BlockInit {
     public static final Block CHISELED_POLISHED_BLACKSTONE_HOLDER = register("chiseled_polished_blackstone_holder", new ChiseledPolishedBlackstoneHolder(FabricBlockSettings.copy(Blocks.STONE)));
     public static final Block PIGLIN_FLAG = register("piglin_flag", new PiglinFlag(FabricBlockSettings.copy(Blocks.SPRUCE_PLANKS)));
-    public static final Block SHADOW_CHEST = register("shadow_chest", new ShadowChest(FabricBlockSettings.create().requiresTool().strength(100F, 1000.0F).luminance((state) -> {
+    public static final Block SHADOW_CHEST = register("shadow_chest", new ShadowChest(FabricBlockSettings.of((Material.STONE)).requiresTool().strength(100F, 1000.0F).luminance((state) -> {
         return 8;
     })));
 

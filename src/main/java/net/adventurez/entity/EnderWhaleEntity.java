@@ -122,7 +122,7 @@ public class EnderWhaleEntity extends FlyingEntity implements ItemSteerable {
 
     // Not used since it is a flying entity which overrides the travel method and doesn't use movementspeed
     @Override
-    protected float getSaddledSpeed(PlayerEntity controllingPlayer) {
+    protected float getSaddledSpeed(LivingEntity controllingPassenger) {
         return (float) this.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED) * this.saddledComponent.getMovementSpeedMultiplier();
     }
 
@@ -234,14 +234,14 @@ public class EnderWhaleEntity extends FlyingEntity implements ItemSteerable {
     // getControlledMovementInput used in method travelControlled()
     // which will execute travel() method
     @Override
-    protected Vec3d getControlledMovementInput(PlayerEntity controllingPlayer, Vec3d movementInput) {
-        return new Vec3d(0.0f, controllingPlayer.getPitch() / 180f * -1f, 1.0f);
+    protected Vec3d getControlledMovementInput(LivingEntity controllingPassenger, Vec3d movementInput) {
+        return new Vec3d(0.0f, controllingPassenger.getPitch() / 180f * -1f, 1.0f);
     }
 
     @Override
-    protected void tickControlled(PlayerEntity controllingPlayer, Vec3d movementInput) {
-        super.tickControlled(controllingPlayer, movementInput);
-        this.setRotation(controllingPlayer.getYaw(), controllingPlayer.getPitch() * 0.5f);
+    protected void tickControlled(LivingEntity controllingPassenger, Vec3d movementInput) {
+        super.tickControlled(controllingPassenger, movementInput);
+        this.setRotation(controllingPassenger.getYaw(), controllingPassenger.getPitch() * 0.5f);
         this.bodyYaw = this.headYaw = this.getYaw();
         this.prevYaw = this.headYaw;
         this.saddledComponent.tickBoost();
@@ -253,7 +253,7 @@ public class EnderWhaleEntity extends FlyingEntity implements ItemSteerable {
     }
 
     @Override
-    protected void updatePassengerPosition(Entity passenger, PositionUpdater positionUpdater) {
+    public void updatePassengerPosition(Entity passenger) {
         if (!this.hasPassenger(passenger)) {
             return;
         }
@@ -264,7 +264,7 @@ public class EnderWhaleEntity extends FlyingEntity implements ItemSteerable {
         float f = MathHelper.sin(this.bodyYaw * 0.017453292F) * offSet;
         float g = MathHelper.cos(this.bodyYaw * 0.017453292F) * offSet;
 
-        positionUpdater.accept(passenger, this.getX() + (double) (0.1F * f), this.getBodyY(0.83F) + passenger.getHeightOffset() + 0.0D, this.getZ() - (double) (0.1F * g));
+        passenger.setPosition(this.getX() + (double) (0.1F * f), this.getBodyY(0.83F) + passenger.getHeightOffset() + 0.0D, this.getZ() - (double) (0.1F * g));
     }
 
     @Override

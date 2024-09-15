@@ -1033,17 +1033,13 @@ public class DragonEntity extends PathAwareEntity implements InventoryChangedLis
     }
 
     @Override
-    protected void updatePassengerPosition(Entity passenger, PositionUpdater positionUpdater) {
+    public void updatePassengerPosition(Entity passenger) {
         // public void updatePassengerPosition(Entity passenger) {
         // super.updatePassengerPosition(passenger);
-        super.updatePassengerPosition(passenger, positionUpdater);
+        super.updatePassengerPosition(passenger);
         if (passenger instanceof MobEntity) {
             MobEntity mobEntity = (MobEntity) passenger;
             this.bodyYaw = mobEntity.bodyYaw;
-            // float slowlyIncreasingFloat = ((float) Math.floorMod(this.getWorld().getTime(), 100L) + animationProgress) / 100.0F;
-            // float mediumSpeedSin = MathHelper.cos(12.566370614F * slowlyIncreasingFloat );
-            // float bodyFloating = -mediumSpeedSin - 4.0F;
-            // this.body.pivotY = bodyFloating;
             if (this.getWorld().isClient()) {
                 float offSet = 12F;
                 if (passenger.equals(this.getControllingPassenger())) {

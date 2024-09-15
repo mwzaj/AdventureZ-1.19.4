@@ -24,7 +24,7 @@ import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.loot.LootTables;
-import net.minecraft.loot.context.LootContextParameterSet;
+import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.nbt.NbtCompound;
@@ -40,6 +40,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
 
 public class ShadowChestEntity extends LootableContainerBlockEntity implements LidOpenable {
 
@@ -192,8 +193,8 @@ public class ShadowChestEntity extends LootableContainerBlockEntity implements L
 
     public void setRandomLoot() {
         if (!this.getWorld().isClient()) {
-            List<ItemStack> tableList = this.getWorld().getServer().getLootManager().getLootTable(LootTables.END_CITY_TREASURE_CHEST)
-                    .generateLoot(new LootContextParameterSet.Builder((ServerWorld) this.getWorld()).add(LootContextParameters.ORIGIN, Vec3d.ofCenter(this.pos)).build(LootContextTypes.CHEST));
+            List<ItemStack> tableList = this.world.getServer().getLootManager().getTable(LootTables.END_CITY_TREASURE_CHEST).generateLoot(
+                    (new LootContext.Builder((ServerWorld) this.world)).parameter(LootContextParameters.ORIGIN, Vec3d.ofCenter(this.pos)).random(this.world.random).build(LootContextTypes.CHEST));
 
             for (int i = 0; i < 27; i++) {
                 if (i == 20 && this.getWorld().getRandom().nextFloat() < 0.2F && FabricLoader.getInstance().isModLoaded("medievalweapons")) {

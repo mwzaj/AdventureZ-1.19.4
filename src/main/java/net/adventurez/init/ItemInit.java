@@ -30,7 +30,10 @@ import net.minecraft.util.Identifier;
 public class ItemInit {
 
     // Item Group
-    public static final RegistryKey<ItemGroup> ADVENTUREZ_ITEM_GROUP = RegistryKey.of(RegistryKeys.ITEM_GROUP, new Identifier("adventurez", "item_group"));
+    public static final ItemGroup ADVENTUREZ_ITEM_GROUP = FabricItemGroup.builder(new Identifier("adventurez", "item_group"))
+            .icon(() -> new ItemStack(ItemInit.HANDBOOK))
+            .displayName(Text.translatable("item.adventurez.item_group"))
+            .build();
 
     // Items
     public static final Item GILDED_BLACKSTONE_SHARD = register("gilded_blackstone_shard", new GildedBlackstoneShard(new Item.Settings().fireproof(), () -> EntityInit.GILDED_BLACKSTONE_SHARD));
@@ -93,8 +96,6 @@ public class ItemInit {
     }
 
     public static void init() {
-        Registry.register(Registries.ITEM_GROUP, ADVENTUREZ_ITEM_GROUP,
-                FabricItemGroup.builder().icon(() -> new ItemStack(ItemInit.HANDBOOK)).displayName(Text.translatable("item.adventurez.item_group")).build());
         BrewingRecipeRegistry.registerPotionRecipe(Potions.AWKWARD, ItemInit.ORC_SKIN, Potions.TURTLE_MASTER);
         BrewingRecipeRegistry.registerPotionRecipe(Potions.AWKWARD, ItemInit.ENDER_WHALE_SKIN, Potions.SLOW_FALLING);
     }
